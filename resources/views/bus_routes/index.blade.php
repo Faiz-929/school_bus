@@ -1,42 +1,44 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-bold">قائمة خطوط السير</h2>
+        <h2 class="text-xl font-bold">قائمة الباصات</h2>
     </x-slot>
+    <h1 class="text-xl font-bold mb-4">🗺️ قائمة خطوط السير</h1>
 
-    <div class="p-6">
-        @include('partials.alerts')
+    @include('partials.alerts')
 
-        <a href="{{ route('bus_routes.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded">+ إضافة خط سير</a>
+    <a href="{{ route('bus_routes.create') }}" 
+    class="bg-blue-500 text-white px-4 py-2 rounded">➕ إضافة خط سير</a>
 
-        <table class="w-full mt-4 border">
-            <thead class="bg-gray-100">
+    <table class="table-auto w-full mt-4 border">
+        <thead>
+            <tr>
+                <th class="border px-4 py-2">#</th>
+                <th class="border px-4 py-2">اسم الخط</th>
+                <th class="border px-4 py-2">الباص</th>
+                <th class="border px-4 py-2">الإجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($routes as $route)
                 <tr>
-                    <th class="p-2 border">#</th>
-                    <th class="p-2 border">الاسم</th>
-                    <th class="p-2 border">نقطة البداية</th>
-                    <th class="p-2 border">نقطة النهاية</th>
-                    <th class="p-2 border">محطات (مخزنة كسلسلة)</th>
-                    <th class="p-2 border">خيارات</th>
+                    <td class="border px-4 py-2">{{ $route->id }}</td>
+                    <td class="border px-4 py-2">{{ $route->name }}</td>
+                    <td class="border px-4 py-2">{{ $route->bus->plate_number ?? 'بدون' }}</td>
+                    <td class="border px-4 py-2">
+                        <a href="{{ route('bus_routes.edit', $route) }}" class="text-blue-500">✏️ تعديل</a> |
+                        <form action="{{ route('bus_routes.destroy', $route) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-500" 
+                                    onclick="return confirm('هل أنت متأكد من الحذف؟')">🗑️ حذف</button>
+                        </form>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach($routes as $r)
-                    <tr>
-                        <td class="p-2 border">{{ $r->id }}</td>
-                        <td class="p-2 border">{{ $r->name }}</td>
-                        <td class="p-2 border">{{ $r->start_point }}</td>
-                        <td class="p-2 border">{{ $r->end_point }}</td>
-                        <td class="p-2 border">{{ $r->stops ?? '-' }}</td>
-                        <td class="p-2 border flex gap-2">
-                            <a href="{{ route('bus_routes.edit', $r) }}" class="bg-yellow-500 text-white px-2 py-1 rounded">تعديل</a>
-                            <form action="{{ route('bus_routes.destroy', $r) }}" method="POST" onsubmit="return confirm('هل أنت متأكد؟')">
-                                @csrf @method('DELETE')
-                                <button class="bg-red-500 text-white px-2 py-1 rounded">حذف</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+            @empty
+                <tr>
+                    <td colspan="4" class="border px-4 py-2 text-center">لا توجد خطوط سير</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
 </x-app-layout>

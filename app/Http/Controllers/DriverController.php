@@ -23,7 +23,7 @@ class DriverController extends Controller
         $request->validate([
             'name'       => 'required|string|max:255',
             'phone'      => 'required|string|max:20',
-            'license_no' => 'nullable|string|max:50',
+            'license_number' => 'nullable|string|max:50',
         ]);
 
         Driver::create($request->all());
@@ -40,7 +40,7 @@ class DriverController extends Controller
         $request->validate([
             'name'       => 'required|string|max:255',
             'phone'      => 'required|string|max:20',
-            'license_no' => 'nullable|string|max:50',
+            'license_number' => 'nullable|string|max:50',
         ]);
 
         $driver->update($request->all());

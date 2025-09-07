@@ -29,7 +29,7 @@
                 </select>
             </div>
 
-            <div>
+            {{-- <div>
                 <label>خط السير (اختياري)</label>
                 <select name="bus_route_id" class="w-full border p-2">
                     <option value="">-- لا يوجد --</option>
@@ -37,7 +37,7 @@
                         <option value="{{ $r->id }}" @selected(old('bus_route_id', $bus->bus_route_id) == $r->id)>{{ $r->name }}</option>
                     @endforeach
                 </select>
-            </div>
+            </div> --}}
 
             <button class="bg-yellow-500 text-white px-4 py-2 rounded">تحديث</button>
         </form>
